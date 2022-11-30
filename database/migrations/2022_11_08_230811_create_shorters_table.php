@@ -18,6 +18,7 @@ return new class extends Migration
             $table -> string("url_key");
             $table -> string("original_url");
             $table -> string("redirect_url");
+            $table -> string("userId");
             $table->timestamps();
         });
     }

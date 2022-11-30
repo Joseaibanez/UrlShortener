@@ -7,6 +7,9 @@
             <div class="card" style="align-items: center">
                 <h1>Introduce la Url a recortar</h1>
                 <div class="card-body">
+                    @if (session('success_message'))
+                        {{!! session('success_message') !!}}
+                    @endif
                     <form action="{{ route('short.url') }}" method="post">
                         <div id="formurl">
                         <input type="url" name="original_url" placeholder="Introduce la URL aquí...">

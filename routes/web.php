@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\UrlShorter;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\UrlShorterController;
+use App\Models\Shorter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,21 +16,21 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
-$urlList = UrlShorter::all();
 
-foreach($urlList as $list) {
-    //Hacer algo
-    Route::redirect($list->url_key, $list->url_redirect, 301);
+/*
+/ Crear las redirecciones
+/ el 301 indica una redireccion
+/ permanente
+*/
+$shortenedUrls = Shorter::all();
+foreach($shortenedUrls as $url) {
+    Route::redirect($url->url_key, $url->original_url, 301);
 }
-*/
 
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
-*/
 Route::get('/', [MainController::class, 'inicio'])->name('inicio');
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Urls por usuario
+Route::get('/url_list', [UrlShorterController::class, 'listUrls'])->name('short.list');
+// Fin
 Route::post('/short', [UrlShorterController::class, 'short'])->name('short.url');
