@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Shorter;
 use App\http\Requests\ShortRequest;
 use Illuminate\Support\Facades\Auth;
+use PharIo\Manifest\Url;
 
 class UrlShorterController extends Controller
 {
@@ -44,5 +45,11 @@ class UrlShorterController extends Controller
                 ->where("userId", "=", $userId)
                 ->get();
         return view('url_list')->with(['urls'=>$urls]);
+    }
+
+    public function deleteUrl($key) {
+        $urlToDelete = Shorter::find($key);
+        $urlToDelete->delete();
+        return back();
     }
 }

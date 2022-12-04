@@ -30,6 +30,7 @@ foreach($shortenedUrls as $url) {
 Route::get('/', [MainController::class, 'inicio'])->name('inicio');
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('delete/{key}', [UrlShorterController::class, 'deleteUrl']);
 // Urls por usuario
 Route::get('/url_list', [UrlShorterController::class, 'listUrls'])->name('short.list');
 // Fin
