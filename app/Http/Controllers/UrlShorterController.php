@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Shorter;
 use App\http\Requests\ShortRequest;
 use Illuminate\Support\Facades\Auth;
+use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use Redirect;
 use Route;
 use PharIo\Manifest\Url;
@@ -28,10 +29,10 @@ class UrlShorterController extends Controller
                     'redirect_url' => url($short_url)
                 ]);
                 // Id del usuario
-                $userId = Auth::id();
-                if($userId!=null) {
+                $userMail = Auth::user()->email;
+                if($userMail!=null) {
                     $shortened_Url->update([
-                        'userId' => $userId
+                        'userMail' => $userMail
                     ]);
                 }
                 return back()->with('success_message',
@@ -44,10 +45,10 @@ class UrlShorterController extends Controller
     }
 
     public function listUrls() {
-        $userId = Auth::id();
+        $userMail = Auth::user()->email;
         $urls = \DB::table('shorters')
                 ->select("*")
-                ->where("userId", "=", $userId)
+                ->where("userMail", "=", $userMail)
                 ->get();
         return view('url_list')->with(['urls'=>$urls]);
     }
@@ -59,10 +60,21 @@ class UrlShorterController extends Controller
     }
 
     public function showStatistics($id) {
-        $urlToShow = Shorter::find($id);
-        return view('estadisticas_url')->with(['urlToShow'=>$urlToShow]);
+        // Grafico
+        $chart_options = [
+            'chart_title' => 'Urls Creadas',
+            'report_type' => 'group_by_string',
+            'model' => 'App\Models\Shorter',
+            'group_by_field' => 'userMail',
+            'group_by_period' => 'day',
+            'chart_type' => 'bar',
+        ];
+        $urlsChart = new LaravelChart($chart_options);
+        //
+        return view('estadisticas_user', compact('urlsChart'));
     }
 
+    /*
     public function countVisit() {
         \DB::table('shorters')
             ->where("redirect_url", "=", url()->current())
@@ -70,4 +82,6 @@ class UrlShorterController extends Controller
                 'visitas' => \DB::raw('visitas + 1'),
             ]);
     }
+    */
+
 }

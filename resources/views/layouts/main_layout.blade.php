@@ -61,6 +61,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="nav-link" href="{{ route('short.list') }}">Lista de urls</a>
+                                    <a class="nav-link" href="{{ url('stats/'.Auth::user()->id) }}">Estadísticas de usuario</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

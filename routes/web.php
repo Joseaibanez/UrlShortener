@@ -46,7 +46,7 @@ Route::get('delete/{key}', [UrlShorterController::class, 'deleteUrl']);
 // Urls por usuario
 Route::get('/url_list', [UrlShorterController::class, 'listUrls'])->name('short.list');
 // Estadisticas de una url
-Route::get('stats/{key}', [UrlShorterController::class, 'showStatistics']);
+Route::get('stats/{id}', [UrlShorterController::class, 'showStatistics']);
 // Acortar Url
 Route::post('/short', [UrlShorterController::class, 'short'])->name('short.url');
 

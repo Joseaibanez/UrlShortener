@@ -8,7 +8,7 @@
                 <h1>Introduce la Url a recortar</h1>
                 <div class="card-body">
                     @if (session('success_message'))
-                        {{!! session('success_message') !!}}
+                        {!! session('success_message') !!}
                     @endif
                     <form action="{{ route('short.url') }}" method="post">
                         <div id="formurl">
