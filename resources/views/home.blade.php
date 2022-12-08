@@ -22,4 +22,16 @@
         </div>
     </div>
 </div>
+
+<!-- COPIAR AL BORRADOR -->
+@section('scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
+
+<script type="text/javascript">
+    var Clipboard = new Clipboard('.copyBtn');
+</script>
+
+@endsection
+
 @endsection

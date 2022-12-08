@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Shorter;
 use App\http\Requests\ShortRequest;
 use Illuminate\Support\Facades\Auth;
+use Redirect;
+use Route;
 use PharIo\Manifest\Url;
 
 class UrlShorterController extends Controller
@@ -21,6 +23,7 @@ class UrlShorterController extends Controller
                 $shortened_Url->update([
                     'url_key' => $short_url
                 ]);
+                $short_url = 'redirect/'.$short_url;
                 $shortened_Url->update([
                     'redirect_url' => url($short_url)
                 ]);
@@ -31,8 +34,10 @@ class UrlShorterController extends Controller
                         'userId' => $userId
                     ]);
                 }
+                return back()->with('success_message',
+                '<input type="text" id="shortenedUrl" name="sUrl" value="'.url($short_url).'">'.'   '.'
+                <button class="copyBtn" data-clipboard-target="#shortenedUrl">Copy</button><br>');
 
-                return back()->with('success_message','Url acortada: <a class="text-blue-500" href="'.url($short_url).'">'.url($short_url).'</a>');
             }
         }
         return back();
@@ -47,9 +52,22 @@ class UrlShorterController extends Controller
         return view('url_list')->with(['urls'=>$urls]);
     }
 
-    public function deleteUrl($key) {
-        $urlToDelete = Shorter::find($key);
+    public function deleteUrl($id) {
+        $urlToDelete = Shorter::find($id);
         $urlToDelete->delete();
         return back();
+    }
+
+    public function showStatistics($id) {
+        $urlToShow = Shorter::find($id);
+        return view('estadisticas_url')->with(['urlToShow'=>$urlToShow]);
+    }
+
+    public function countVisit() {
+        \DB::table('shorters')
+            ->where("redirect_url", "=", url()->current())
+            ->update([
+                'visitas' => \DB::raw('visitas + 1'),
+            ]);
     }
 }

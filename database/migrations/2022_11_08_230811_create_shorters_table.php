@@ -19,6 +19,7 @@ return new class extends Migration
             $table -> string("original_url");
             $table -> string("redirect_url");
             $table -> string("userId");
+            $table -> integer("visitas");
             $table->timestamps();
         });
     }

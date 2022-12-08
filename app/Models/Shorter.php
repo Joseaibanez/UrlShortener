@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Shorter extends Model
 {
     use HasFactory;
-    protected $fillable = ['original_url','url_key','redirect_url','userId'];
+    protected $fillable = ['url_key','original_url','redirect_url','userId', 'visitas'];
 }

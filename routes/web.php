@@ -17,21 +17,36 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+
 /*
 / Crear las redirecciones
 / el 301 indica una redireccion
 / permanente
 */
 $shortenedUrls = Shorter::all();
+// Aumentar contador
+    \DB::table('shorters')
+            ->where("redirect_url", "=", url()->current())
+            ->update([
+                'visitas' => \DB::raw('visitas + 1'),
+            ]);
+    // Fin
 foreach($shortenedUrls as $url) {
-    Route::redirect($url->url_key, $url->original_url, 301);
+
+    Route::redirect('redirect/'.$url->url_key, $url->original_url);
 }
 
+// Aumentar el contador de visitas
+Route::get('redirect/{key}', [UrlShorterController::class, 'countVisit']);
+// Rutas
 Route::get('/', [MainController::class, 'inicio'])->name('inicio');
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('delete/{key}', [UrlShorterController::class, 'deleteUrl']);
 // Urls por usuario
 Route::get('/url_list', [UrlShorterController::class, 'listUrls'])->name('short.list');
-// Fin
+// Estadisticas de una url
+Route::get('stats/{key}', [UrlShorterController::class, 'showStatistics']);
+// Acortar Url
 Route::post('/short', [UrlShorterController::class, 'short'])->name('short.url');
+

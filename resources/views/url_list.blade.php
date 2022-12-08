@@ -16,9 +16,9 @@
         @foreach ($urls as $url)
             <tr>
                 <td>{{ $url->original_url }}</td>
-                <td>{{ $url->redirect_url }}</td>
+                <td><a href="{{ $url->redirect_url }}">{{ $url->redirect_url }}</a></td>
                 <td><a href="{{ url('delete/'.$url->id) }}"><i class="fa fa-trash"></i></a></td>
-                <td><button id="estadisticas" type="submit"><i class="fa fa-search"></i></button></td>
+                <td><a href="{{ url('stats/'.$url->id) }}"><i class="fa fa-search"></i></i></a></td>
             </tr>
         @endforeach
     </tbody>
