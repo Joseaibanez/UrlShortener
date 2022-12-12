@@ -48,5 +48,5 @@ Route::get('/url_list', [UrlShorterController::class, 'listUrls'])->name('short.
 // Estadisticas de una url
 Route::get('stats/{id}', [UrlShorterController::class, 'showStatistics']);
 // Acortar Url
-Route::post('/short', [UrlShorterController::class, 'short'])->name('short.url');
+Route::post('/short', [UrlShorterController::class, 'short'])->name('short.url')->middleware('auth');
 

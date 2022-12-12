@@ -1,7 +1,7 @@
 @extends('layouts.main_layout')
 
 @section('content')
-<h1>Lista de Urls</h1>
+<h1 class="text-center">Lista de Urls</h1>
 <br>
 <table id="tablaUrls" class="display" style="width:100%">
     <thead>

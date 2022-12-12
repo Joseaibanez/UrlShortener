@@ -12,7 +12,7 @@
                     @endif
                     <form action="{{ route('short.url') }}" method="post">
                         <div id="formurl">
-                        <input type="url" name="original_url" placeholder="Introduce la URL aquí...">
+                        <input type="url" maxlength="100" name="original_url" placeholder="Introduce la URL aquí...">
                         @csrf
                         <input type="submit" value="Acortar">
                         </div>
