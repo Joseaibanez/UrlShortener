@@ -1,18 +1,21 @@
 @extends('layouts.main_layout')
 
 @section('content')
-<h1 class="text-center">Estadísticas de {{ Auth::user()->name }}</h1>
+<h1 class="text-center display-5 text-light fw-bolder">Estadísticas de {{ Auth::user()->name }}</h1>
 <br>
-<div class="card-body">
-    <h2>Dirección IP: {{ Request::ip(); }}</h2>
-    <h2>Correo electrónico: {{ Auth::user()->email }}</h2>
-    <h2>Fecha de registro: {{ Auth::user()->created_at }}</h2>
+<div class="col-md-7 mx-auto" style="margin-top: 20px; width: 80%; display: flex; gap: 10px;">
+    <div class="card" style="width: 25%; height: 20%">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Dirección IP: {{ Request::ip(); }}</li>
+            <li class="list-group-item">Correo electrónico: {{ Auth::user()->email }}</li>
+            <li class="list-group-item">Fecha de registro: {{ Auth::user()->created_at }}</li>
+        </ul>
+    </div>
+    <br>
+    <div id="contenedorGrafico" class="card-body bg-light" style="width: 60%;">
+        {!! $urlsChart->renderHtml() !!}
+    </div>
 </div>
-<div id="contenedorGrafico" class="card-body">
-    <h1>{{ $urlsChart->options['chart_title'] }}</h1>
-    {!! $urlsChart->renderHtml() !!}
-</div>
-<br><br><br><br><br><br>
 
 <!-- GRÁFICO -->
 @section('scripts')

@@ -13,7 +13,11 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <style>
+        body {
+            background: url("/img/pageImg.jpg");
+        }
+    </style>
     <!-- Styles -->
     @yield('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
@@ -23,10 +27,10 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-secondary shadow-sm">
+        <nav class="navbar navbar-expand-md bg-dark bg-secondary shadow-sm">
             <div class="container">
                 <a class="navbar-brand text-white" href="http://localhost:8000">
-                    Url Shorter
+                    ShortLy
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -44,13 +48,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Iniciar Sesión') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('register') }}">{{ __('Registro') }}</a>
                                 </li>
                             @endif
 
@@ -59,7 +63,7 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end bg-secondary" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-end bg-dark" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item text-white" href="{{ route('short.list') }}">Lista de urls</a>
                                     <a class="dropdown-item text-white" href="{{ url('stats/'.Auth::user()->id) }}">{{ __('Estadísticas') }}</a>
                                     <a class="dropdown-item text-white" href="{{ route('logout') }}"
@@ -79,16 +83,15 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4" style="margin-bottom: 10%">
             @yield('content')
         </main>
     </div>
     <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-dark fixed-bottom">
+    <footer class="footer mt-auto py-3 bg-dark fixed-bottom" style="height: 5%">
         <div class="container">
             </ul>
-        <p class="text-center text-white">TFG 2022</p>
-        <p class="text-center text-white">© Jose Antonio Ibáñez</p>
+        <p class="text-center text-white">TFG 2022 © Jose Antonio Ibáñez</p>
         </div>
     </footer>
     <!-- Fin Footer -->

@@ -10,18 +10,17 @@ use Redirect;
 use Route;
 use PharIo\Manifest\Url;
 
+use function PHPUnit\Framework\isNull;
+
 class UrlShorterController extends Controller
 {
 
     public function short(ShortRequest $request) {
         if($request -> original_url) {
             //$urlInBase = Shorter::find($request -> original_url);
-            $urlsInBase = \DB::table('shorters')
-                ->select("*")
-                ->where("original_url", "=", $request -> original_url)
-                ->where("userMail", "=", Auth::user()->email)
-                ->get();
-            if($urlsInBase->isEmpty()) {
+            $urlsInBase = self::getAllUrl($request);
+            if(Auth::user() == null) {
+                // Si NO hay usuario
                 // Insercion de nueva URL
                 $shortened_Url = Shorter::create([
                     'original_url' => $request -> original_url
@@ -37,24 +36,63 @@ class UrlShorterController extends Controller
                     $shortened_Url->update([
                         'redirect_url' => url($short_url)
                     ]);
-                    // Id del usuario
-                    $userMail = Auth::user()->email;
-                    if($userMail!=null) {
-                        $shortened_Url->update([
-                            'userMail' => $userMail
-                        ]);
-                    }
                     return back()->with('success_message',
                     '<input type="text" id="shortenedUrl" name="sUrl" value="'.url($short_url).'">'.'   '.'
                     <button class="copyBtn" data-clipboard-target="#shortenedUrl">Copiar</button><br><br>');
                 }
                 // Fin
             } else {
-                return back()->with('success_message','<h2>La URL ya ha sido introducida</h2>');
+                // Si hay usuario
+                if($urlsInBase->isEmpty()) {
+                    // Insercion de nueva URL
+                    $shortened_Url = Shorter::create([
+                        'original_url' => $request -> original_url
+                    ]);
+                    if($shortened_Url) {
+                        $RandomKey = rand(100000000, 1000000000);
+                        $short_url = base_convert($RandomKey, 10, 36);
+                        // Comprobacion de url repetida e inserción
+                        $shortened_Url->update([
+                            'url_key' => $short_url
+                        ]);
+                        $short_url = 'redirect/'.$short_url;
+                        $shortened_Url->update([
+                            'redirect_url' => url($short_url)
+                        ]);
+                        // Id del usuario
+                        $userMail = Auth::user()->email;
+                        if($userMail!=null) {
+                            $shortened_Url->update([
+                                'userMail' => $userMail
+                            ]);
+                        }
+                        return back()->with('success_message',
+                        '<input type="text" id="shortenedUrl" name="sUrl" value="'.url($short_url).'">'.'   '.'
+                        <button class="copyBtn" data-clipboard-target="#shortenedUrl">Copiar</button><br><br>');
+                    }
+                    // Fin
+                } else {
+                    return back()->with('success_message','<h2>La URL ya ha sido introducida</h2>');
+                }
             }
-
         }
         return back();
+    }
+
+    public function getAllUrl($request) {
+        if(Auth::user() == null) {
+            $urlsInBase = \DB::table('shorters')
+                ->select("*")
+                ->where("original_url", "=", $request -> original_url)
+                ->get();
+        } else {
+            $urlsInBase = \DB::table('shorters')
+                ->select("*")
+                ->where("original_url", "=", $request -> original_url)
+                ->where("userMail", "=", Auth::user()->email)
+                ->get();
+        }
+        return $urlsInBase;
     }
 
     /*
