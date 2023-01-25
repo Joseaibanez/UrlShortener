@@ -9,6 +9,7 @@
             <li class="list-group-item">Dirección IP: {{ Request::ip(); }}</li>
             <li class="list-group-item">Correo electrónico: {{ Auth::user()->email }}</li>
             <li class="list-group-item">Fecha de registro: {{ Auth::user()->created_at }}</li>
+            <li class="list-group-item"><a class="btn btn-warning" href="{{ url('deleteUser/'.Auth::user()->email) }}" onclick="return confirm('Tu usuario se eliminará de forma permanente ¿Estás seguro?')">Eliminar Cuenta</a></li>
         </ul>
     </div>
     <br>

@@ -53,4 +53,6 @@ Route::get('/url_list', [UrlShorterController::class, 'listUrls'])->name('short.
 Route::get('stats/{id}', [UrlShorterController::class, 'showStatistics']);
 // Acortar Url
 Route::post('/short', [UrlShorterController::class, 'short'])->name('short.url');
+// Eliminar cuenta de usuario
+Route::get('deleteUser/{mail}', [UrlShorterController::class, 'deleteUser']);
 

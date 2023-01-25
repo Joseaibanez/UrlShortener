@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shorter;
+use App\Models\User;
 use App\http\Requests\ShortRequest;
 use Illuminate\Support\Facades\Auth;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
@@ -95,19 +96,6 @@ class UrlShorterController extends Controller
         return $urlsInBase;
     }
 
-    /*
-    public function checkDuplicatedUrl($urlToInsert) {
-        $exists = false;
-        $allData = Shorter::all();
-        foreach($allData as $url) {
-            if($url.) {
-
-            }
-        }
-        return $exists;
-    }
-    */
-
     public function listUrls() {
         $userMail = Auth::user()->email;
         $urls = \DB::table('shorters')
@@ -141,14 +129,17 @@ class UrlShorterController extends Controller
         return view('estadisticas_user', compact('urlsChart'));
     }
 
-    /*
-    public function countVisit() {
-        \DB::table('shorters')
-            ->where("redirect_url", "=", url()->current())
-            ->update([
-                'visitas' => \DB::raw('visitas + 1'),
-            ]);
+    public function deleteUser($userMail) {
+        if($userMail) {
+            \DB::table('shorters')
+                ->select("*")
+                ->where("userMail", "=", $userMail)
+                ->delete();
+            \DB::table('users')
+                ->select("*")
+                ->where("email", "=", $userMail)
+                ->delete();
+        }
+        return view('home');
     }
-    */
-
 }
